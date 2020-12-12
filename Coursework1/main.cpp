@@ -3,7 +3,11 @@
 #include <string>
 using namespace std;
 
+
 int main() {
+
+    const float g = 9.81;
+
 
 
     string parameters[8]; //consider using a struct for code readability
@@ -39,6 +43,25 @@ int main() {
         cout << "Unable to open file";
     }
 
+
+    //Runge Kutta 4 Method
+
+#define f1(t,theta1) 0
+#define f2(t, theta2) 0
+
+    float t0, t10, y0;
+    float h = stoi(parameters[6]);
+    float n = stoi(parameters[7]) / h;
+
+    for (int i = 1; i < n; i++) {
+        float k1 = h * (f1(t0, t10));
+        float k2 = h * (f1(t0+0.5*k1, t10+h/2));
+        float k3 = h * (f1(t0 + 0.5 * k2, t10 + h / 2));
+        float k4 = h * (f1(t0+k3,t10 +h));
+        float y = t0 + (k1 + k2) / 6 + (k2 + k3) / 3 + 0;
+        t0 = t0 + h;
+        y0 = y;
+    }
 
 
     ofstream resultsFile("output.txt"); //write results in overwritten output.txt file 
