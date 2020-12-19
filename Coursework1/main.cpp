@@ -13,6 +13,7 @@ double f1(double T, double x, double u, double y, double v);
 double f2(double T, double x, double u, double y, double v);
 double f3(double T, double x, double u, double y, double v, string parameters[]);
 double f4(double T, double x, double u, double y, double v, string parameters[]);
+double* fun(double T, double x, double u, double y, double v, string parameters[]);
 
 int main() {
 
@@ -89,33 +90,48 @@ int main() {
         //cout << f1(T, x, u, y, v) << " " << f2(T, x, u, y, v) << " " << f3(T, x, u, y, v,parameters) << " " << f4(T, x, u, y, v,parameters) << endl;
 
 
-        double k1 = h * (f1(T,x,u,y,v));
+        /*double k1 = h * (f1(T,x,u,y,v));
         double l1 = h * (f2(T, x, u, y, v));
         double m1 = h * (f3(T, x, u, y, v,parameters));
-        double o1 = h * (f4(T, x, u, y, v,parameters));
-
-        //cout << f1(T, x, u, y, v) << " " << f2(T, x, u, y, v) << " " << f3(T, x, u, y, v,parameters) << " " << f4(T, x, u, y, v,parameters) << endl;
+        double o1 = h * (f4(T, x, u, y, v,parameters));*/
 
 
-        double k2 = h * (f1(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1));
+        double* res1 = fun(T,x,u,y,v,parameters);
+
+
+
+        /*double k2 = h * (f1(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1));
         double l2 = h * (f2(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1));
-        double m2 = h * (f3(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1,parameters));
-        double o2 = h * (f4(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1,parameters));
+        double m2 = h * (f3(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1));
+        double o2 = h * (f4(T + 0.5 * h, x + 0.5 * h * k1, u + 0.5 * h * l1, y + 0.5 * h * m1, v + 0.5 * h * o1,parameters));*/
 
-        double k3 = h * (f1(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2));
+        double* res2 = fun(T + 0.5 * h, x + 0.5 * h * res1[0], u + 0.5 * h * res1[1], y + 0.5 * h * res1[2], v + 0.5 * h * res1[3], parameters);
+
+        /*double k3 = h * (f1(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2));
         double l3 = h * (f2(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2));
         double m3 = h * (f3(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2,parameters));
-        double o3 = h * (f4(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2,parameters));
+        double o3 = h * (f4(T + 0.5 * h, x + 0.5 * h * k2, u + 0.5 * h * l2, y + 0.5 * h * m2, v + 0.5 * h * o2,parameters));*/
 
-        double k4 = h * (f1(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3));
+        double* res3 = fun(T + 0.5 * h, x + 0.5 * h * res2[0], u + 0.5 * h * res2[1], y + 0.5 * h * res2[2], v + 0.5 * h * res2[3], parameters);
+
+
+        /*double k4 = h * (f1(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3));
         double l4 = h * (f2(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3));
         double m4 = h * (f3(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3,parameters));
-        double o4 = h * (f4(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3,parameters));
+        double o4 = h * (f4(T + h, x + h * k3, u + h * l3, y + h * m3, v + h * o3,parameters));*/
+
+        double* res4 = fun(T + 0.5 * h, x + 0.5 * h * res3[0], u + 0.5 * h * res3[1], y + 0.5 * h * res3[2], v + 0.5 * h * res3[3], parameters);
+
         
-        u = u + (k1 + k4) / 6 + (k2 + k3) / 3;
+        /*u = u + (k1 + k4) / 6 + (k2 + k3) / 3;
         x = x + (l1 + l4) / 6 + (l2 + l3) / 3;
         y = y + (m1 + m4) / 6 + (m2 + m3) / 3;
-        v = v + (o1 + o4) / 6 + (o2 + o3) / 3;
+        v = v + (o1 + o4) / 6 + (o2 + o3) / 3;*/
+
+        u = u + (res1[0] + res4[0]) / 6 + (res2[0] + res3[0]) / 3;
+        x = x + (res1[1] + res4[1]) / 6 + (res2[1] + res3[1]) / 3;
+        y = y + (res1[2] + res4[2]) / 6 + (res2[2] + res3[2]) / 3;
+        v = v + (res1[3] + res4[3]) / 6 + (res2[3] + res3[3]) / 3;
 
         //cout << k1 << " " << k2 << " " << k3 << " " << k4 << endl; //returns ind after l2 - probably illegal opperation on a float
         resultsFile << T << "\t" << x << "\t" << u << endl;
@@ -156,5 +172,20 @@ int main() {
      double l1 = stof(parameters[2]);
      double l2 = stof(parameters[3]);
      double res = (2 * sin(x - u) * (pow(y, 2) * l1 * (ma1 + ma2) + g * (ma1 + ma2) * cos(x) + pow(v, 2) * l2 * ma2 * cos(x - u))) / (l2 * (2 * ma1 + ma2 - ma2 * cos(2 * x - 2 * u)));
+     return res;
+ }
+
+ double* fun(double T, double x, double u, double y, double v,string parameters[]) {
+     const double g = 9.81;
+     double ma1 = stof(parameters[0]);
+     double ma2 = stof(parameters[1]);
+     double l1 = stof(parameters[2]);
+     double l2 = stof(parameters[3]);
+     double h = stof(parameters[6]);
+     static double res[4];
+     res[0] =h * y; //k
+     res[1] =h* v; //l
+     res[2] =h* (-g * (2 * ma1 + ma2) * sin(x) - ma2 * g * sin(x - 2u) - 2 * sin(x - u) * ma2 * (pow(v, 2) * l2 + pow(y, 2) * l1 * cos(x - u))) / (l1 * (2 * ma1 + ma2 - ma2 * cos(2 * x - 2 * u)));
+     res[3] =h* (2 * sin(x - u) * (pow(y, 2) * l1 * (ma1 + ma2) + g * (ma1 + ma2) * cos(x) + pow(v, 2) * l2 * ma2 * cos(x - u))) / (l2 * (2 * ma1 + ma2 - ma2 * cos(2 * x - 2 * u)));
      return res;
  }
