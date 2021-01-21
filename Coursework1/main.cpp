@@ -4,7 +4,7 @@
 #include <cmath>
 using namespace std;
 
-const int g_g = 9.81; //Global variable for gravitational constant
+const double g_g = 9.81; //Global variable for gravitational constant
 
 double f1(double t, double theta1, double theta2, double theta11, double theta22, double params[]);
 double f2(double t, double theta1, double theta2, double theta11, double theta22, double params[]);
@@ -12,13 +12,12 @@ double f3(double t, double theta1, double theta2, double theta11, double theta22
 double f4(double t, double theta1, double theta2, double theta11, double theta22, double params[]);
 
 
-
 int main() {
 
 
     double parameters[8] = {0};
-    ifstream cParams("parameters.txt");
 
+    ifstream cParams("parameters.txt");
     if (!cParams) { //check if the parameters file exists
 
         cout << "The parameters file was not found in the directory and has been created with default values" << endl;
@@ -34,13 +33,13 @@ int main() {
         wParams << "10.0 "; //total duration t
         wParams.close();
     }
-    ifstream fParams("parameters.txt");
 
+    ifstream fParams("parameters.txt");
     if (fParams.is_open()) {
         string value[] = {"mass 1","mass 2","length 1","length 2","theta 1 start", "theta 2 start","timestep","duration"};
         for (int i = 0; i < 8; i++) {
             fParams >> parameters[i]; //store values from the file into an array of 8 strings
-            cout << "Read " << value[i] << " = " << parameters[i] << endl;
+            cout << "Read " << value[i] << " = " << parameters[i] << endl;     
         }
         fParams.close();
     }
@@ -50,27 +49,27 @@ int main() {
     }
 
     ofstream resultsFile("output.txt"); //write results in overwritten output.txt file
-    resultsFile << "t\tx\ty\n";
-    resultsFile << "------------------------\n";
+    resultsFile << "t\tx1\ty1\tx2\ty2\n";
+    resultsFile << "---------------------------------------\n";
 
 
 
-    //Runge Kutta 4 Method
+    //Obtaining values from parameters
     double l1 = parameters[2];
     double l2 = parameters[3];
-    double theta1 = parameters[4];  //x0
-    double theta2 = parameters[5];  //u0
+    double theta1 = parameters[4]; 
+    double theta2 = parameters[5]; 
     double dTheta1 = 0;
     double dTheta2 = 0;
     double h = parameters[6];
     double n = parameters[7] / h;
 
-    double k1_1, k1_2, k1_3, k1_4, k2_1, k2_2, k2_3, k2_4, k3_1, k3_2, k3_3, k3_4, k4_1, k4_2, k4_3, k4_4, x, y;
+    double k1_1, k1_2, k1_3, k1_4, k2_1, k2_2, k2_3, k2_4, k3_1, k3_2, k3_3, k3_4, k4_1, k4_2, k4_3, k4_4, x1, x2, y1, y2;
 
     double t = 0;
 
-
-    while (t < 10) {
+    //Runge Kutta 4 Method for a system of 4 Odes
+    while (t < parameters[7]) {
         k1_1 = f2(t, theta1, theta2, dTheta1, dTheta2, parameters);
         k1_2 = f1(t, theta1, theta2, dTheta1, dTheta2, parameters);
         k1_3 = f4(t, theta1, theta2, dTheta1, dTheta2, parameters);
@@ -100,14 +99,15 @@ int main() {
         dTheta2 = dTheta2 + (k1_3 + k2_3 * 2 + k3_3 * 2 + k4_3) / 6.0 * h;
         theta2 = theta2 + (k1_4 + k2_4 * 2 + k3_4 * 2 + k4_4) / 6.0 * h;
 
-
-        x = l1*sin(theta1) + l2 * sin(theta2);
-        y = -l1*cos(theta1) - l2 * cos(theta2);
+        x1 = l1 * sin(theta1);
+        y1 = -l1 * cos(theta1);
+        x2 = x1 + l2 * sin(theta2);
+        y2 = y1 - l2 * cos(theta2);
 
 
         
-        cout << t << " " << x << " " << y << endl;
-        resultsFile << t << "\t" << x << "\t" << y << endl; //Print results to file for all timesteps
+        cout << t << " " << x2 << " " << y2 << endl;
+        resultsFile << t << "\t" << round(x1 * 10000) / 10000 << "\t" << round(y1 * 10000) / 10000 << "\t" << round(x2 * 10000) / 10000 << "\t" << round(y2 * 10000) / 10000 << endl; //Print results to file for all timesteps
         t += h;
     }
 
