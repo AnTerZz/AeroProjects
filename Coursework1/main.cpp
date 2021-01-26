@@ -21,7 +21,7 @@ int main() {
     if (!cParams) { //check if the parameters file exists
 
         cout << "The parameters file was not found in the directory and has been created with default values" << endl;
-        ofstream wParams;
+        ofstream wParams;  
         wParams.open("parameters.txt"); //creates a blank parameters file and writes default values to is as follows
         wParams << "1.5 "; //m1
         wParams << "2 "; //m2
