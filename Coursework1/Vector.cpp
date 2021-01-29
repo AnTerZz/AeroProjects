@@ -13,7 +13,7 @@ Vector::Vector(const unsigned int pSize) {
     memset(data, 0, pSize * sizeof(double));
 }
 
-// Copies an existing vector. First we allocate a new block of memory of the
+// Copy constructor for an existing vector. First we allocate a new block of memory of the
 // same size, and then copy the data from pSrc into it.
 Vector::Vector(const Vector& pSrc) {
     size = pSrc.size;
@@ -21,20 +21,8 @@ Vector::Vector(const Vector& pSrc) {
     memcpy(data, pSrc.data, size * sizeof(double));
 }
 
-// "Moves" an existing vector. In this case, we transfer ownership of the
-// existing block of data from pSrc to this newly created vector. This avoids
-// copying the data. In pSrc, we set the data pointer to nullptr, which is why
-// pSrc is not passed as a const parameter.
-//
-// Note that this is mainly used for efficiency reasons, particular when
-// returning temporary objects created in the operator functions below, by
-// value.
-Vector::Vector(Vector&& pSrc) {
-    size = pSrc.size;
-    data = pSrc.data;
-    pSrc.data = nullptr;
-    pSrc.size = 0;
-}
+// Default move contructor for the Vector Class
+Vector::Vector(Vector&& pSrc) = default;
 
 // Return a reference to a double so that the calling routine can set values in
 // the array, as well as read from them.
@@ -70,7 +58,7 @@ Vector Vector::operator+(const Vector& pSrc) {
     return std::move(result);
 }
 
-
+//Vector Multiplication by a scalar operator overload
 Vector Vector::operator*(const double factor) {
     Vector result(size);
     for (int i = 0; i < size; ++i) {
@@ -79,7 +67,7 @@ Vector Vector::operator*(const double factor) {
     return std::move(result);
 }
 
-
+//Vector division by a scalar operator overload
 Vector Vector::operator/(const double factor) {
     Vector result(size);
     for (int i = 0; i < size; ++i) {
